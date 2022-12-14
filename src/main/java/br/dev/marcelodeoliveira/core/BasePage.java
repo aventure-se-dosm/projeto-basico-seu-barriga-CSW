@@ -21,7 +21,7 @@ public class BasePage {
 		this.path = path;
 	}
 
-	public BasePage() {
+	protected BasePage() {
 
 	}
 
@@ -130,6 +130,8 @@ public class BasePage {
 	public void clicarBotao(String id) {
 		getDriver().findElement(By.id(id)).click();
 	}
+	
+
 
 	public String obterValueElemento(String id) {
 		return getDriver().findElement(By.id(id)).getAttribute("value");
@@ -261,6 +263,14 @@ public class BasePage {
 
 	public String obterValorCampo(By xpath) {
 		return getDriver().findElement(xpath).getAttribute("value");
+	}
+
+	public void setPath(String newPath) {
+		this.path = newPath;
+	}
+	
+	public String getPath() {
+		return this.path;
 	}
 
 }

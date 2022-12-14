@@ -1,13 +1,15 @@
 package br.dev.marcelodeoliveira.core;
 
 import static br.dev.marcelodeoliveira.core.DriverFactory.getDriver;
-
+import br.dev.marcelodeoliveira.page.LoginPage;
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.TestName;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -16,6 +18,7 @@ public class BaseTest {
 
 
 	protected String path;
+	protected LoginPage page = new LoginPage();
 
 	public BaseTest() {
 
@@ -24,12 +27,22 @@ public class BaseTest {
 
 	protected void setPath(String path) {
 		this.path = path;
-
 	}
 
 	@Rule
 	public TestName tname = new TestName();
 
+	@Before 
+		public void inicializa() {
+		page.entraNaTelaInicial();
+		page.login("dev.marcelodeoliveira@gmail.com", "kiko");
+	}
+	
+	@Test
+	public void testezero(){
+		
+	}	
+	
 	@After
 	public void finaliza() {
 
@@ -43,7 +56,7 @@ public class BaseTest {
 					File.separator + File.separator)));
 
 		} catch (IOException e) {
-			System.out.println("Erro: não foi possível salvar o arquivo!");			;
+			System.out.println("Erro: não foi possível salvar o arquivo!");
 		}
 
 		catch (Exception e) {
