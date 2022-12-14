@@ -2,8 +2,9 @@ package br.dev.marcelodeoliveira.core;
 
 import static br.dev.marcelodeoliveira.core.DriverFactory.getDriver;
 
-import java.util.ArrayList;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.openqa.selenium.Alert;
@@ -14,11 +15,16 @@ import org.openqa.selenium.support.ui.Select;
 
 public class BasePage {
 	protected DSL dsl;
+	protected String path;
+
+	protected BasePage(String path) {
+		this.path = path;
+	}
 
 	public BasePage() {
-	
+
 	}
-	
+
 	/********* TextField e TextArea ************/
 
 	public void escrever(By by, String texto) {
@@ -39,8 +45,8 @@ public class BasePage {
 	public void clicarRadio(String id) {
 		getDriver().findElement(By.id(id)).click();
 	}
-	
-	public void clicarRadio(By by ) {
+
+	public void clicarRadio(By by) {
 		getDriver().findElement(by).click();
 	}
 
@@ -62,15 +68,15 @@ public class BasePage {
 		WebElement element = getDriver().findElement(By.id(id));
 		Select combo = new Select(element);
 		combo.selectByVisibleText(valor);
-		
-		
+
 	}
-	
+
 	public void deselecionarCombo(By xpath, String... values) {
-		// TODO Auto-generated method stub
 		WebElement element = getDriver().findElement(xpath);
 		Select combo = new Select(element);
-		for(String value : values) combo.deselectByValue(value);
+		for (String value : values)
+			combo.deselectByValue(value);
+
 	}
 
 //	public void deselecionarCombo(String id, String valor) {
@@ -85,16 +91,19 @@ public class BasePage {
 		return combo.getFirstSelectedOption().getText();
 	}
 
-	//faz uma DTO dos elementos selecionados no combo
+	// faz uma DTO dos elementos selecionados no combo
 	public List<String> obterValoresCombo(String id) {
-		
+
 		Select combo = new Select(getDriver().findElement(By.id(id)));
-		List<WebElement> allSelectedOptions = combo.getAllSelectedOptions();
-		List<String> valores = new ArrayList<String>();
-		for (WebElement opcao : allSelectedOptions) {
-			valores.add(opcao.getText());
-		}
-		return valores;
+
+		return combo.getAllSelectedOptions().stream().map(p -> p.getText()).collect(Collectors.toList());
+
+//		List<WebElement> allSelectedOptions = combo.getAllSelectedOptions();
+//		List<String> valores = new ArrayList<String>();
+//		for (WebElement opcao : allSelectedOptions) {
+//			valores.add(opcao.getText());
+//		}
+//		return valores;
 	}
 
 	public int obterQuantidadeOpcoesCombo(String id) {
@@ -198,29 +207,19 @@ public class BasePage {
 
 	/********* Tabela ************/
 
-	public void clicarButtonTabela(String AttributeCol, String value, String elemType, String tabelaId) {
-		/**
-		 * Objetivos 1. vai interagir somente com os elem. <button>
-		 *
-		 * 2. talez use for no lugar de lambda pra fins didáticos. mas por enquanto só
-		 * vai chamar o método interageComTabela
-		 */
-
-	}
-
 	// obter índices de linha e coluna para criar um xpath que clique no botão
 	// correspondente ao nome.
 	// testar a mensagem aberta.
 	// só pelo classpath montado que o botão correspondente sertá clicado.
 	// indexação html: 1 a n; n >=1.
 
-	private int obterIndiceColuna(WebElement tabela, String attribute) {
+//	private int obterIndiceColuna(WebElement tabela, String attribute) {
+//
+//		List<WebElement> colunas = tabela.findElements(By.xpath("./thead//th"));
+//		return (colunas.indexOf(colunas.stream().filter(tr -> tr.getText().equals(attribute)).findFirst().get()) + 1);
+//	}
 
-		List<WebElement> colunas = tabela.findElements(By.xpath("./thead//th"));
-		return (colunas.indexOf(colunas.stream().filter(tr -> tr.getText().equals(attribute)).findFirst().get()) + 1);
-	}
-
-	private int obterIndiceLinha(WebElement tabela, String value, int col) {
+	private int obterIndiceLinha(WebElement tabela, String value) {
 
 		List<WebElement> linhas = tabela.findElements(By.xpath("./tbody/tr"));
 		Assert.assertEquals(linhas.size(), 5);
@@ -233,18 +232,16 @@ public class BasePage {
 
 	}
 
-	public String interageComTabela_xpath(String attributeCol, String value, String elemType, String tabelaId) {
+	public String interageComTabela_xpath(String value, String elemType, String tabelaId) {
 
-		var tabela = getDriver().findElement(By.xpath("//table[@id='elementosForm:tableUsuarios']"));
+		var tabela = getDriver().findElement(By.xpath("//table[@id='" + tabelaId + "']"));
 
-		int indiceCol = obterIndiceColuna(tabela, attributeCol);
+		int indiceLin = obterIndiceLinha(tabela, value);
 
-		int indiceLin = obterIndiceLinha(tabela, value, indiceCol);
+		var button = tabela.findElement(By.xpath("./tbody/tr[" + indiceLin + "]/td/input[@type='" + elemType + "']"));
 
-		var button = tabela.findElement(By.xpath("./tbody/tr[" + indiceLin + "]/td/input[@type='button']"));
-
-		Assert.assertEquals(button.getTagName(), "input");
-		Assert.assertEquals(button.getAttribute("type"), "button");
+		Assert.assertEquals("input", button.getTagName());
+		Assert.assertEquals("button", button.getAttribute("type"));
 		button.click();
 
 		return alertaObterTextoENega();
@@ -253,20 +250,17 @@ public class BasePage {
 
 	public void clicarBotao(By xpath) {
 		getDriver().findElement(xpath).click();
-		
+
 	}
 
 	public void buscarPorXpathEClicarBotao(WebElement elem, By by) {
 
 		elem.findElement(by);
-		
+
 	}
 
 	public String obterValorCampo(By xpath) {
-		// TODO Auto-generated method stub
 		return getDriver().findElement(xpath).getAttribute("value");
 	}
-
-
 
 }

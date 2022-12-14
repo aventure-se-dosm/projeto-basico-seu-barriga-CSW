@@ -14,12 +14,12 @@ import org.openqa.selenium.TakesScreenshot;
 
 public class BaseTest {
 
-	protected static DSL dsl;
+
 	protected String path;
 
-	BaseTest() {
-		dsl = new DSL();
-		setPath("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+	public BaseTest() {
+
+		setPath("https://seubarriga.wcaquino.me/login");
 	}
 
 	protected void setPath(String path) {
@@ -43,8 +43,12 @@ public class BaseTest {
 					File.separator + File.separator)));
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Erro: não foi possível salvar o arquivo!");			;
+		}
+
+		catch (Exception e) {
+			System.out.println("Erro:\n" + e.getLocalizedMessage());
+
 		}
 
 	}
