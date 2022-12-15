@@ -1,11 +1,10 @@
 package br.dev.marcelodeoliveira.page;
 
-import org.junit.Before;
+import static br.dev.marcelodeoliveira.core.DriverFactory.getDriver;
+
 import org.openqa.selenium.By;
 
 import br.dev.marcelodeoliveira.core.BasePage;
-import br.dev.marcelodeoliveira.core.BaseTest;
-import static br.dev.marcelodeoliveira.core.DriverFactory.getDriver;
 
 public class LoginPage extends BasePage {
 	

@@ -1,6 +1,5 @@
 package br.dev.marcelodeoliveira.core;
 
-import org.junit.After;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;

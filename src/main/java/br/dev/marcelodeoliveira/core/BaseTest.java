@@ -1,7 +1,7 @@
 package br.dev.marcelodeoliveira.core;
 
 import static br.dev.marcelodeoliveira.core.DriverFactory.getDriver;
-import br.dev.marcelodeoliveira.page.LoginPage;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -9,10 +9,11 @@ import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.rules.TestName;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+
+import br.dev.marcelodeoliveira.page.LoginPage;
 
 public class BaseTest {
 
@@ -37,11 +38,7 @@ public class BaseTest {
 		page.entraNaTelaInicial();
 		page.login("dev.marcelodeoliveira@gmail.com", "kiko");
 	}
-	
-	@Test
-	public void testezero(){
-		
-	}	
+
 	
 	@After
 	public void finaliza() {

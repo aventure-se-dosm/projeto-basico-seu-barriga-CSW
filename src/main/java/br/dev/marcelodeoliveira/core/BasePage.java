@@ -2,7 +2,6 @@ package br.dev.marcelodeoliveira.core;
 
 import static br.dev.marcelodeoliveira.core.DriverFactory.getDriver;
 
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +15,7 @@ import org.openqa.selenium.support.ui.Select;
 public class BasePage {
 	protected DSL dsl;
 	protected String path;
+    
 
 	protected BasePage(String path) {
 		this.path = path;
@@ -25,13 +25,16 @@ public class BasePage {
 
 	}
 
+
+
 	/********* TextField e TextArea ************/
 
-	public void escrever(By by, String texto) {
+	public void escrever(By by, String valor) {
 		getDriver().findElement(by).clear();
-		getDriver().findElement(by).sendKeys(texto);
+		getDriver().findElement(by).sendKeys(String.valueOf(valor));
 	}
 
+	
 	public void escrever(String id_campo, String texto) {
 		escrever(By.id(id_campo), texto);
 	}
@@ -65,11 +68,18 @@ public class BasePage {
 	/********* Combo ************/
 
 	public void selecionarCombo(String id, String valor) {
-		WebElement element = getDriver().findElement(By.id(id));
+		selecionarCombo(By.id(id), valor);
+
+	}
+	
+	public void selecionarCombo(By by, String valor) {
+		WebElement element = getDriver().findElement(by);
 		Select combo = new Select(element);
 		combo.selectByVisibleText(valor);
 
 	}
+	
+	
 
 	public void deselecionarCombo(By xpath, String... values) {
 		WebElement element = getDriver().findElement(xpath);
@@ -98,12 +108,6 @@ public class BasePage {
 
 		return combo.getAllSelectedOptions().stream().map(p -> p.getText()).collect(Collectors.toList());
 
-//		List<WebElement> allSelectedOptions = combo.getAllSelectedOptions();
-//		List<String> valores = new ArrayList<String>();
-//		for (WebElement opcao : allSelectedOptions) {
-//			valores.add(opcao.getText());
-//		}
-//		return valores;
 	}
 
 	public int obterQuantidadeOpcoesCombo(String id) {
@@ -265,12 +269,11 @@ public class BasePage {
 		return getDriver().findElement(xpath).getAttribute("value");
 	}
 
-	public void setPath(String newPath) {
-		this.path = newPath;
+	public void setPath(String path) {
+		this.path = path;
+		
 	}
-	
-	public String getPath() {
-		return this.path;
-	}
+
+
 
 }

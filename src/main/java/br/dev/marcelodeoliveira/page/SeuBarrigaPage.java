@@ -1,10 +1,11 @@
 package br.dev.marcelodeoliveira.page;
 
-import br.dev.marcelodeoliveira.core.BasePage;
 import static br.dev.marcelodeoliveira.core.DriverFactory.getDriver;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import br.dev.marcelodeoliveira.core.BasePage;
 
 public class SeuBarrigaPage extends BasePage{
 	
